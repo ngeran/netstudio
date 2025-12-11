@@ -29,50 +29,10 @@ from tui.services.api_client import APIService
 class NetworkAutomationApp(App):
     """Main TUI application for network automation"""
 
-    CSS = """
-    Screen {
-        background: $surface;
-    }
+    # Load Tokyo Night theme
+    CSS_PATH = str(Path(__file__).parent.parent / "tokyo_night.tcss")
 
-    Header {
-        text-align: center;
-        text-style: bold;
-        background: $primary;
-    }
-
-    .menu-container {
-        margin: 1;
-    }
-
-    .menu-item {
-        padding: 1;
-        border: solid $primary;
-        margin: 1 0;
-    }
-
-    .menu-item:hover {
-        background: $primary;
-        color: $text;
-    }
-
-    .status-bar {
-        dock: bottom;
-        height: 3;
-        background: $panel;
-        color: $text;
-    }
-
-    .version-info {
-        text-align: right;
-        padding: 0 1;
-    }
-
-    .device-count {
-        padding: 0 1;
-    }
-    """
-
-    TITLE = "Network Automation TUI"
+    TITLE = "🌃 Network Automation TUI - Tokyo Night"
     SUB_TITLE = "Juniper Device Management"
 
     BINDINGS = [
@@ -80,7 +40,14 @@ class NetworkAutomationApp(App):
         Binding("d", "devices", "Devices"),
         Binding("t", "templates", "Templates"),
         Binding("c", "config", "Config"),
+        Binding("i", "inventory", "Inventory"),
+        Binding("b", "backup", "Backup"),
+        Binding("s", "state_capture", "State Capture"),
+        Binding("r", "route_monitor", "Route Monitor"),
+        Binding("g", "bgp_toolbox", "BGP Toolbox"),
+        Binding("u", "code_upgrade", "Code Upgrade"),
         Binding("h", "help", "Help"),
+        Binding("F1", "dashboard", "Dashboard"),
     ]
 
     inventory_service: reactive[InventoryService] = reactive(InventoryService())
@@ -96,7 +63,10 @@ class NetworkAutomationApp(App):
         try:
             devices = self.inventory_service.load_devices()
             self.device_count = len(devices)
-            self.notify(f"Loaded {self.device_count} devices from inventory", severity="information")
+            self.notify(
+                f"Loaded {self.device_count} devices from inventory",
+                severity="information",
+            )
         except Exception as e:
             self.notify(f"Failed to load inventory: {e}", severity="error")
             self.device_count = 0
@@ -119,20 +89,15 @@ class NetworkAutomationApp(App):
         """Create the main application layout"""
         yield Header()
 
-        with Container(classes="menu-container"):
-            yield Static("Main Menu", classes="menu-item")
+        # Horizontal menu bar
+        from tui.components.menu_bar import MenuBar
 
-            menu_items = [
-                ("📱 Device Management", "devices", self.show_device_management),
-                ("📝 Template Editor", "templates", self.show_template_editor),
-                ("⚙️ Configuration Deploy", "config", self.show_configuration_deploy),
-                ("🔍 Device Discovery", "discovery", self.show_device_discovery),
-                ("📊 System Status", "status", self.show_system_status),
-                ("❓ Help & Documentation", "help", self.show_help),
-            ]
+        yield MenuBar()
 
-            for label, button_id, callback in menu_items:
-                yield Button(label, id=button_id, classes="menu-item")
+        # Show dashboard by default
+        from tui.components.dashboard import Dashboard
+
+        yield Dashboard(self.inventory_service, self.api_service)
 
         yield Footer()
 
@@ -156,9 +121,49 @@ class NetworkAutomationApp(App):
         """Show help information"""
         self.show_help()
 
+    def action_inventory(self) -> None:
+        """Navigate to inventory editor"""
+        self.show_inventory_editor()
+
+    def action_backup(self) -> None:
+        """Navigate to config backup"""
+        self.show_config_backup()
+
+    def action_state_capture(self) -> None:
+        """Navigate to state capture"""
+        self.show_state_capture()
+
+    def action_route_monitor(self) -> None:
+        """Navigate to route monitor"""
+        self.show_route_monitor()
+
+    def action_bgp_toolbox(self) -> None:
+        """Navigate to BGP toolbox"""
+        self.show_bgp_toolbox()
+
+    def action_code_upgrade(self) -> None:
+        """Navigate to code upgrade"""
+        self.show_code_upgrade()
+
+    def action_dashboard(self) -> None:
+        """Show dashboard"""
+        self.notify(
+            "Dashboard is the home screen! Press ESC to return.", severity="information"
+        )
+
+    def action_create_template(self) -> None:
+        """Create new template"""
+        self.show_template_editor()
+
+    def action_edit_inventory(self) -> None:
+        """Edit inventory"""
+        self.show_inventory_editor()
+
     def show_device_management(self) -> None:
         """Navigate to device management screen"""
-        self.push_screen(DeviceManagementScreen(self.inventory_service, self.api_service))
+        self.push_screen(
+            DeviceManagementScreen(self.inventory_service, self.api_service)
+        )
 
     def show_template_editor(self) -> None:
         """Navigate to template editor screen"""
@@ -166,7 +171,9 @@ class NetworkAutomationApp(App):
 
     def show_configuration_deploy(self) -> None:
         """Navigate to configuration deployment screen"""
-        self.push_screen(ConfigurationDeployScreen(self.inventory_service, self.api_service))
+        self.push_screen(
+            ConfigurationDeployScreen(self.inventory_service, self.api_service)
+        )
 
     def show_device_discovery(self) -> None:
         """Navigate to device discovery screen"""
@@ -179,6 +186,40 @@ class NetworkAutomationApp(App):
     def show_help(self) -> None:
         """Navigate to help screen"""
         self.push_screen(HelpScreen())
+
+    def show_inventory_editor(self) -> None:
+        """Navigate to inventory editor screen"""
+        self.push_screen(InventoryEditorScreen(self.inventory_service))
+
+    def show_config_backup(self) -> None:
+        """Navigate to config backup screen"""
+        from tui.components.config_backup_screen import ConfigBackupScreen
+
+        self.push_screen(ConfigBackupScreen(self.inventory_service, self.api_service))
+
+    def show_state_capture(self) -> None:
+        """Navigate to state capture screen"""
+        from tui.components.state_capture_screen import StateCaptureScreen
+
+        self.push_screen(StateCaptureScreen(self.inventory_service, self.api_service))
+
+    def show_route_monitor(self) -> None:
+        """Navigate to route monitor screen"""
+        from tui.components.route_monitor_screen import RouteMonitorScreen
+
+        self.push_screen(RouteMonitorScreen(self.inventory_service, self.api_service))
+
+    def show_bgp_toolbox(self) -> None:
+        """Navigate to BGP toolbox screen"""
+        from tui.components.bgp_toolbox_screen import BGPToolboxScreen
+
+        self.push_screen(BGPToolboxScreen(self.inventory_service, self.api_service))
+
+    def show_code_upgrade(self) -> None:
+        """Navigate to code upgrade screen"""
+        from tui.components.code_upgrade_screen import CodeUpgradeScreen
+
+        self.push_screen(CodeUpgradeScreen(self.inventory_service, self.api_service))
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle button press events"""
@@ -298,12 +339,18 @@ class HelpScreen(Screen):
             yield Static("Network Automation TUI - Phase 2", classes="help-title")
             yield Static("")
             yield Static("Keyboard Shortcuts:")
-            yield Static("  q - Quit application")
+            yield Static("  F1 - Dashboard (Home)")
             yield Static("  d - Device Management")
             yield Static("  t - Template Editor")
             yield Static("  c - Configuration Deploy")
-            yield("  s - API Status")
+            yield Static("  i - Inventory Editor")
+            yield Static("  b - Config Backup & Restore")
+            yield Static("  s - State Capture")
+            yield Static("  r - Route Monitor")
+            yield Static("  g - BGP Toolbox")
+            yield Static("  u - Code Upgrade (NEW!)")
             yield Static("  h - Help")
+            yield Static("  q - Quit application")
             yield Static("")
             yield Static("Navigation:")
             yield Static("  - Use arrow keys or tab to navigate")
@@ -322,6 +369,11 @@ class HelpScreen(Screen):
             yield Static("  ✨ WebSocket progress tracking")
             yield Static("  ✨ Enhanced device browser")
             yield Static("  ✨ Configuration deployment with rollback")
+            yield Static("  ✨ Config Backup & Restore")
+            yield Static("  ✨ State Capture with DeepDiff")
+            yield Static("  ✨ Route Monitor with auto-refresh")
+            yield Static("  ✨ BGP Toolbox with peer monitoring")
+            yield Static("  ✨ Code Upgrade wizard (NEW!)")
             yield Static("  ✨ PyEZ integration (mock available)")
             yield Static("")
             yield Static("API Status:")
@@ -336,6 +388,23 @@ class HelpScreen(Screen):
             self.app.pop_screen()
 
 
+class InventoryEditorScreen(Screen):
+    """Inventory YAML editor screen"""
+
+    def __init__(self, inventory_service):
+        super().__init__()
+        self.inventory_service = inventory_service
+
+    def compose(self) -> ComposeResult:
+        yield Header("Inventory Editor")
+
+        from tui.components.inventory_editor import InventoryEditor
+
+        yield InventoryEditor(self.inventory_service)
+
+        yield Footer()
+
+
 if __name__ == "__main__":
     app = NetworkAutomationApp()
-    app.run()
+

@@ -7,8 +7,15 @@ Juniper interface configurations without writing Jinja2 or YAML.
 
 from textual.containers import Container, Horizontal, Vertical, ScrollableContainer
 from textual.widgets import (
-    Input, Select, Button, Static, TextArea, Checkbox,
-    LoadingIndicator, Label, Switch
+    Input,
+    Select,
+    Button,
+    Static,
+    TextArea,
+    Checkbox,
+    LoadingIndicator,
+    Label,
+    Switch,
 )
 from textual.reactive import reactive
 from textual.validation import Function, Regex, Length
@@ -21,6 +28,7 @@ from typing import Dict, Any, Optional, List
 
 class ConfigGenerated(Message):
     """Message sent when configuration is generated"""
+
     def __init__(self, config: str) -> None:
         self.config = config
         super().__init__()
@@ -138,24 +146,17 @@ class InterfaceTemplateEditor(Container):
                     placeholder="ge-0/0/0",
                     id="interface_name",
                     validators=[
-                        Function(self._validate_interface_name, "Invalid interface format")
-                    ]
+                        Function(
+                            self._validate_interface_name, "Invalid interface format"
+                        )
+                    ],
                 )
 
                 yield Label("Description:")
-                yield Input(
-                    placeholder="Link description",
-                    id="description"
-                )
+                yield Input(placeholder="Link description", id="description")
 
                 yield Label("Unit ID:")
-                yield Input(
-                    value="0",
-                    id="unit_id",
-                    validators=[
-                        Regex(r"^\d+$", "Unit ID must be a number")
-                    ]
-                )
+                yield Input(value="0", id="unit_id", validators=[Regex(r"^\d+$")])
 
                 yield Label("Status:")
                 yield Switch(value=True, id="interface_enabled")
@@ -164,11 +165,7 @@ class InterfaceTemplateEditor(Container):
             with Vertical(classes="form-column"):
                 yield Static("IP Configuration", classes="section-title")
 
-                yield Checkbox(
-                    "Enable IP Configuration",
-                    value=True,
-                    id="ip_enabled"
-                )
+                yield Checkbox("Enable IP Configuration", value=True, id="ip_enabled")
 
                 yield Label("IP Address:")
                 yield Input(
@@ -176,25 +173,16 @@ class InterfaceTemplateEditor(Container):
                     id="ip_address",
                     validators=[
                         Function(self._validate_ip_address, "Invalid IP format")
-                    ]
+                    ],
                 )
 
                 yield Static("Advanced Settings", classes="section-title")
 
                 yield Label("MTU:")
-                yield Input(
-                    value="1500",
-                    id="mtu",
-                    validators=[
-                        Regex(r"^\d+$", "MTU must be a number")
-                    ]
-                )
+                yield Input(value="1500", id="mtu", validators=[Regex(r"^\d+$")])
 
                 yield Label("Bandwidth:")
-                yield Input(
-                    placeholder="1G",
-                    id="bandwidth"
-                )
+                yield Input(placeholder="1G", id="bandwidth")
 
                 yield Label("Encapsulation:")
                 yield Select(
@@ -202,10 +190,10 @@ class InterfaceTemplateEditor(Container):
                         ("None", ""),
                         ("VLAN", "vlan-ccc"),
                         ("PPP", "ppp-ccc"),
-                        ("Frame Relay", "frame-relay-ccc")
+                        ("Frame Relay", "frame-relay-ccc"),
                     ],
                     value="",
-                    id="encapsulation"
+                    id="encapsulation",
                 )
 
             # Right column - Routing Protocols
@@ -221,17 +209,15 @@ class InterfaceTemplateEditor(Container):
                         placeholder="0.0.0.0",
                         id="ospf_area",
                         validators=[
-                            Function(self._validate_ospf_area, "Invalid OSPF area format")
-                        ]
+                            Function(
+                                self._validate_ospf_area, "Invalid OSPF area format"
+                            )
+                        ],
                     )
 
                     yield Label("OSPF Cost:")
                     yield Input(
-                        placeholder="10",
-                        id="ospf_cost",
-                        validators=[
-                            Regex(r"^\d+$", "OSPF cost must be a number")
-                        ]
+                        placeholder="10", id="ospf_cost", validators=[Regex(r"^\d+$")]
                     )
 
                 # BGP Section
@@ -240,36 +226,24 @@ class InterfaceTemplateEditor(Container):
                 with Container(id="bgp_options"):
                     yield Label("BGP AS Number:")
                     yield Input(
-                        placeholder="65000",
-                        id="bgp_as",
-                        validators=[
-                            Regex(r"^\d+$", "BGP AS must be a number")
-                        ]
+                        placeholder="65000", id="bgp_as", validators=[Regex(r"^\d+$")]
                     )
 
                 # Monitoring
                 yield Static("Monitoring", classes="section-title")
-                yield Checkbox(
-                    "Enable Interface Monitoring",
-                    id="enable_monitoring"
-                )
+                yield Checkbox("Enable Interface Monitoring", id="enable_monitoring")
 
         # Action buttons
         with Horizontal(classes="button-bar"):
             yield Button("🔄 Reset", id="reset", variant="default")
-            yield Button("🔍 Test Syntax", id="test_syntax", variant="secondary")
-            yield Button("💾 Save Template", id="save", variant="secondary")
+            yield Button("🔍 Test Syntax", id="test_syntax", variant="default")
+            yield Button("💾 Save Template", id="save", variant="success")
             yield Button("⚡ Generate Config", id="generate", variant="primary")
 
         # Configuration preview
         with Vertical(classes="config-preview"):
             yield Static("Generated Configuration", classes="section-title")
-            yield TextArea(
-                "",
-                id="config_preview",
-                read_only=True,
-                language="junos"
-            )
+            yield TextArea("", id="config_preview", read_only=True, language="junos")
 
     def on_mount(self):
         """Initialize component when mounted"""
@@ -277,17 +251,17 @@ class InterfaceTemplateEditor(Container):
 
     def _validate_interface_name(self, value: str) -> bool:
         """Validate Juniper interface name format"""
-        pattern = r'^(ge|xe|et|lo|irb|ae|st)-[0-9]+/[0-9]+(/[0-9]+)?$'
+        pattern = r"^(ge|xe|et|lo|irb|ae|st)-[0-9]+/[0-9]+(/[0-9]+)?$"
         return re.match(pattern, value) is not None
 
     def _validate_ip_address(self, value: str) -> bool:
         """Validate IP address with CIDR"""
-        pattern = r'^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/(?:[0-9]|[1-2][0-9]|3[0-2])$'
+        pattern = r"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)/(?:[0-9]|[1-2][0-9]|3[0-2])$"
         return value == "" or re.match(pattern, value) is not None
 
     def _validate_ospf_area(self, value: str) -> bool:
         """Validate OSPF area format"""
-        pattern = r'^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^[0-9]+$'
+        pattern = r"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$|^[0-9]+$"
         return value == "" or re.match(pattern, value) is not None
 
     def on_input_changed(self, event):
@@ -334,11 +308,11 @@ class InterfaceTemplateEditor(Container):
         """Update form field visibility based on checkboxes"""
         # OSPF options
         ospf_container = self.query_one("#ospf_options")
-        ospf_container.set_display(bool(self.ospf_enabled))
+        ospf_container.display = bool(self.ospf_enabled)
 
         # BGP options
         bgp_container = self.query_one("#bgp_options")
-        bgp_container.set_display(bool(self.bgp_enabled))
+        bgp_container.display = bool(self.bgp_enabled)
 
     def action_generate(self):
         """Generate Junos configuration"""
@@ -375,21 +349,21 @@ class InterfaceTemplateEditor(Container):
         enable_monitoring = self.query_one("#enable_monitoring").value
 
         template_vars = {
-            'interface_name': interface_name,
-            'description': description,
-            'unit_id': unit_id,
-            'interface_enabled': interface_enabled,
-            'ip_enabled': ip_enabled,
-            'ip_address': ip_address,
-            'mtu': mtu,
-            'bandwidth': bandwidth,
-            'encapsulation': encapsulation,
-            'ospf_enabled': ospf_enabled,
-            'ospf_area': ospf_area,
-            'ospf_cost': ospf_cost,
-            'bgp_enabled': bgp_enabled,
-            'bgp_as': bgp_as,
-            'enable_monitoring': enable_monitoring
+            "interface_name": interface_name,
+            "description": description,
+            "unit_id": unit_id,
+            "interface_enabled": interface_enabled,
+            "ip_enabled": ip_enabled,
+            "ip_address": ip_address,
+            "mtu": mtu,
+            "bandwidth": bandwidth,
+            "encapsulation": encapsulation,
+            "ospf_enabled": ospf_enabled,
+            "ospf_area": ospf_area,
+            "ospf_cost": ospf_cost,
+            "bgp_enabled": bgp_enabled,
+            "bgp_as": bgp_as,
+            "enable_monitoring": enable_monitoring,
         }
 
         template = """
@@ -454,19 +428,21 @@ snmp {
         errors = []
 
         # Check for unmatched braces
-        brace_count = config.count('{') - config.count('}')
+        brace_count = config.count("{") - config.count("}")
         if brace_count != 0:
             errors.append(f"Unmatched braces: {brace_count}")
 
         # Check for missing semicolons
-        lines = config.split('\n')
+        lines = config.split("\n")
         for i, line in enumerate(lines, 1):
             line = line.strip()
-            if (line and
-                not line.startswith('#') and
-                not line.startswith('}') and
-                not line.endswith(';') and
-                not line.endswith('{')):
+            if (
+                line
+                and not line.startswith("#")
+                and not line.startswith("}")
+                and not line.endswith(";")
+                and not line.endswith("{")
+            ):
                 errors.append(f"Line {i}: Missing semicolon")
 
         if errors:
@@ -526,4 +502,6 @@ snmp {
         elif button_id == "reset":
             self.action_reset()
         elif button_id == "save":
-            self.notify("Save template feature coming in Phase 2", severity="information")
+            self.notify(
+                "Save template feature coming in Phase 2", severity="information"
+            )

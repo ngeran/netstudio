@@ -6,7 +6,15 @@ for real device operations and WebSocket updates.
 """
 
 from textual.containers import Container, Horizontal, Vertical
-from textual.widgets import DataTable, Input, Button, Static, Select, LoadingIndicator, ProgressBar
+from textual.widgets import (
+    DataTable,
+    Input,
+    Button,
+    Static,
+    Select,
+    LoadingIndicator,
+    ProgressBar,
+)
 from textual.reactive import reactive
 from textual.message import Message
 from textual.binding import Binding
@@ -22,6 +30,7 @@ from tui.services.api_client import APIService
 
 class DeviceSelected(Message):
     """Message sent when a device is selected"""
+
     def __init__(self, device: Device) -> None:
         self.device = device
         super().__init__()
@@ -29,6 +38,7 @@ class DeviceSelected(Message):
 
 class TaskStarted(Message):
     """Message sent when a task is started"""
+
     def __init__(self, task_id: str, task_name: str) -> None:
         self.task_id = task_id
         self.task_name = task_name
@@ -72,7 +82,7 @@ class EnhancedDeviceBrowser(Container):
             Static("Selected:", classes="status-label"),
             Static("0 devices", id="selection_count", classes="status-value"),
             Button("🔌 Connect API", id="connect_api", variant="primary"),
-            classes="status-bar"
+            classes="status-bar",
         )
 
         # Toolbar
@@ -82,18 +92,18 @@ class EnhancedDeviceBrowser(Container):
                 options=[("All", "all"), ("Routers", "router"), ("Switches", "switch")],
                 value="all",
                 id="type_filter",
-                allow_blank=False
+                allow_blank=False,
             ),
             Select(
                 options=[("All Locations", "all")],
                 value="all",
                 id="location_filter",
-                allow_blank=False
+                allow_blank=False,
             ),
             Button("🔄 Refresh", id="refresh_btn"),
             Button("🔍 Test All", id="test_all_btn"),
             Button("📊 Get Facts", id="get_facts_btn"),
-            classes="toolbar"
+            classes="toolbar",
         )
 
         # Device table
@@ -102,6 +112,9 @@ class EnhancedDeviceBrowser(Container):
             zebra_stripes=True,
         )
 
+        # Loading indicator
+        yield LoadingIndicator(id="loading", classes="hidden")
+
         # Action buttons for selected devices
         yield Horizontal(
             Button("🔌 Connect Selected", id="connect_selected_btn"),
@@ -109,7 +122,7 @@ class EnhancedDeviceBrowser(Container):
             Button("🔙 Rollback", id="rollback_btn"),
             Button("📊 Get Facts", id="get_facts_selected_btn"),
             Button("🌐 Ping Test", id="ping_test_btn"),
-            classes="action-bar"
+            classes="action-bar",
         )
 
         # Progress bar for operations
@@ -117,7 +130,7 @@ class EnhancedDeviceBrowser(Container):
             id="operation_progress",
             show_eta=True,
             show_percentage=True,
-            classes="hidden"
+            classes="hidden",
         )
 
         # Status message
@@ -130,8 +143,12 @@ class EnhancedDeviceBrowser(Container):
         self._check_api_status()
 
         # Register API message handlers
-        self.api_service.client.register_handler("task_update", self._handle_task_update)
-        self.api_service.client.register_handler("log_message", self._handle_log_message)
+        self.api_service.client.register_handler(
+            "task_update", self._handle_task_update
+        )
+        self.api_service.client.register_handler(
+            "log_message", self._handle_log_message
+        )
 
     def _setup_table(self):
         """Set up the data table columns"""
@@ -145,18 +162,22 @@ class EnhancedDeviceBrowser(Container):
             "Location",
             "Status",
             "API Connected",
-            "Last Check"
+            "Last Check",
         )
 
     async def _check_api_status(self):
         """Check API connection status"""
         if self.api_service.client.is_connected():
             self.api_connected = True
-            self.query_one("#api_status").update("✅ Connected", style="green")
+            status = self.query_one("#api_status")
+            status.update("✅ Connected")
+            status.add_class("status-online")
             self.query_one("#connect_api").display = False
         else:
             self.api_connected = False
-            self.query_one("#api_status").update("❌ Disconnected", style="red")
+            status = self.query_one("#api_status")
+            status.update("❌ Disconnected")
+            status.add_class("status-error")
             self.query_one("#connect_api").display = True
 
     def _refresh_devices(self):
@@ -164,7 +185,13 @@ class EnhancedDeviceBrowser(Container):
         self.loading = True
         table = self.query_one("#device_table")
         table.clear()
-        self.query_one("#loading", after=0).remove_class("hidden") if self.query_one("#loading") else None
+
+        # Show loading indicator
+        try:
+            loading = self.query_one("#loading")
+            loading.remove_class("hidden")
+        except Exception:
+            pass  # Loading indicator might not exist yet
 
         # This will be async in real implementation
         asyncio.create_task(self._load_devices_async())
@@ -183,7 +210,8 @@ class EnhancedDeviceBrowser(Container):
             locations = list(set(d.location or "Unknown" for d in devices))
             location_select = self.query_one("#location_filter")
             location_select.set_options(
-                [("All Locations", "all")] + [(loc, loc.lower()) for loc in sorted(locations)]
+                [("All Locations", "all")]
+                + [(loc, loc.lower()) for loc in sorted(locations)]
             )
 
             self._update_table()
@@ -193,8 +221,11 @@ class EnhancedDeviceBrowser(Container):
             self._show_error(f"Error loading devices: {e}")
         finally:
             self.loading = False
-            if self.query_one("#loading"):
-                self.query_one("#loading").add_class("hidden")
+            try:
+                loading = self.query_one("#loading")
+                loading.add_class("hidden")
+            except Exception:
+                pass  # Loading indicator might not exist
 
     def _update_table(self):
         """Update the device table with current filtered devices"""
@@ -215,22 +246,24 @@ class EnhancedDeviceBrowser(Container):
                 device.location or "Unknown",
                 device.status,
                 api_status,
-                device.last_check.strftime("%H:%M:%S") if device.last_check else "Never",
+                device.last_check.strftime("%H:%M:%S")
+                if device.last_check
+                else "Never",
                 key=device.ip_address,
-                style=status_style
+                style=status_style,
             )
 
     def _get_status_style(self, status: str) -> str:
         """Get display style based on device status"""
         status_styles = {
-            'reachable': 'green',
-            'connected': 'green',
-            'unreachable': 'red',
-            'disconnected': 'red',
-            'error': 'red',
-            'unknown': 'yellow'
+            "reachable": "green",
+            "connected": "green",
+            "unreachable": "red",
+            "disconnected": "red",
+            "error": "red",
+            "unknown": "yellow",
         }
-        return status_styles.get(status.lower(), 'white')
+        return status_styles.get(status.lower(), "white")
 
     def on_input_changed(self, event):
         """Handle search input changes"""
@@ -253,10 +286,10 @@ class EnhancedDeviceBrowser(Container):
             # Search filter
             if search_term:
                 search_match = (
-                    search_term in device.host_name.lower() or
-                    search_term in device.ip_address or
-                    search_term in (device.platform or "").lower() or
-                    search_term in (device.location or "").lower()
+                    search_term in device.host_name.lower()
+                    or search_term in device.ip_address
+                    or search_term in (device.platform or "").lower()
+                    or search_term in (device.location or "").lower()
                 )
                 if not search_match:
                     continue
@@ -280,7 +313,9 @@ class EnhancedDeviceBrowser(Container):
         """Handle device row selection"""
         if event.row_key and event.row_key.value:
             device_ip = event.row_key.value
-            device = next((d for d in self.filtered_devices if d.ip_address == device_ip), None)
+            device = next(
+                (d for d in self.filtered_devices if d.ip_address == device_ip), None
+            )
             if device:
                 self.selected_device = device
                 self.post_message(DeviceSelected(device))
@@ -375,15 +410,17 @@ interfaces {
                 task_id = await self.api_service.client.get_device_facts(device_ips)
                 task_name = f"Get facts from {len(device_ips)} devices"
             elif operation == "deploy_config":
-                config = kwargs.get('config', '')
-                task_id = await self.api_service.client.deploy_config(device_ips, config)
+                config = kwargs.get("config", "")
+                task_id = await self.api_service.client.deploy_config(
+                    device_ips, config
+                )
                 task_name = f"Deploy config to {len(device_ips)} devices"
             elif operation == "ping_test":
                 task_id = await self.api_service.client.ping_test(device_ips)
                 task_name = f"Ping test from {len(device_ips)} devices"
 
             if task_id:
-                self.current_task = {'task_id': task_id, 'operation': operation}
+                self.current_task = {"task_id": task_id, "operation": operation}
                 self.query_one("#operation_progress").remove_class("hidden")
                 self.query_one("#status_message").update(f"Task started: {task_name}")
                 self.post_message(TaskStarted(task_id, task_name))
@@ -395,51 +432,59 @@ interfaces {
 
     async def _handle_task_update(self, data: Dict[str, Any]):
         """Handle task update from WebSocket"""
-        task_data = data.get('task', {})
-        task_id = task_data.get('task_id')
+        task_data = data.get("task", {})
+        task_id = task_data.get("task_id")
 
-        if task_id and self.current_task.get('task_id') == task_id:
+        if task_id and self.current_task.get("task_id") == task_id:
             # Update progress bar
-            progress = task_data.get('progress', 0)
+            progress = task_data.get("progress", 0)
             progress_bar = self.query_one("#operation_progress")
             progress_bar.advance = progress
 
             # Update status message
-            message = task_data.get('message', '')
+            message = task_data.get("message", "")
             self.query_one("#status_message").update(message)
 
             # Check if task is complete
-            status = task_data.get('status', '')
-            if status in ['success', 'failed', 'cancelled']:
+            status = task_data.get("status", "")
+            if status in ["success", "failed", "cancelled"]:
                 progress_bar.add_class("hidden")
-                if status == 'success':
+                if status == "success":
                     self._show_success("Task completed successfully")
-                elif status == 'failed':
-                    error = task_data.get('error', 'Unknown error')
+                elif status == "failed":
+                    error = task_data.get("error", "Unknown error")
                     self._show_error(f"Task failed: {error}")
 
     async def _handle_log_message(self, data: Dict[str, Any]):
         """Handle log message from WebSocket"""
-        level = data.get('level', 'info')
-        message = data.get('message', '')
-        task_id = data.get('task_id', '')
+        level = data.get("level", "info")
+        message = data.get("message", "")
+        task_id = data.get("task_id", "")
 
-        if task_id and self.current_task.get('task_id') == task_id:
+        if task_id and self.current_task.get("task_id") == task_id:
             # Update status with log message
             self.query_one("#status_message").update(f"[{level.upper()}] {message}")
 
     def _update_selection_count(self):
         """Update the selection count display"""
         count = len(self.selected_devices)
-        self.query_one("#selection_count").update(f"{count} device{'s' if count != 1 else ''}")
+        self.query_one("#selection_count").update(
+            f"{count} device{'s' if count != 1 else ''}"
+        )
 
     def _show_error(self, message: str):
         """Show error message"""
-        self.query_one("#status_message").update(f"❌ {message}", style="red")
+        status = self.query_one("#status_message")
+        status.update(f"❌ {message}")
+        status.remove_class("status-online")
+        status.add_class("status-error")
 
     def _show_success(self, message: str):
         """Show success message"""
-        self.query_one("#status_message").update(f"✅ {message}", style="green")
+        status = self.query_one("#status_message")
+        status.update(f"✅ {message}")
+        status.remove_class("status-error")
+        status.add_class("status-online")
 
     def on_button_pressed(self, event):
         """Handle button press events"""
@@ -492,7 +537,9 @@ interfaces {
             return
 
         try:
-            facts = await self.api_service.client.get_device_facts([self.selected_device.ip_address])
+            facts = await self.api_service.client.get_device_facts(
+                [self.selected_device.ip_address]
+            )
             if facts:
                 self._show_success("Facts retrieved successfully")
             else:
@@ -510,7 +557,7 @@ interfaces {
         task_id = await self.api_service.client.rollback_config(device_ips)
 
         if task_id:
-            self.current_task = {'task_id': task_id, 'operation': 'rollback'}
+            self.current_task = {"task_id": task_id, "operation": "rollback"}
             self.query_one("#operation_progress").remove_class("hidden")
             self.query_one("#status_message").update("Rollback started")
         else:
@@ -522,3 +569,4 @@ interfaces {
             self._show_success("API Connected")
         else:
             self._show_error("API Disconnected")
+

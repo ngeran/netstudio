@@ -324,4 +324,3 @@ case "${1:-help}" in
         show_help
         exit 1
         ;;
-esac

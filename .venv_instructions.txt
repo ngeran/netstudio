@@ -1,0 +1,107 @@
+╔══════════════════════════════════════════════════════════════════════════╗
+║                     NetStudio Virtual Environment Setup                  ║
+║                                                                          ║
+║  Three ways to get started:                                             ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│ OPTION 1: AUTOMATED SETUP (RECOMMENDED)                                 │
+└──────────────────────────────────────────────────────────────────────────┘
+
+  cd /Users/UPGH/github/Vanguard/netstudio
+  ./setup_venv.sh
+
+  ✓ This will automatically:
+    - Create virtual environment
+    - Install all dependencies
+    - Configure environment variables
+    - Set up your shell profile
+
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│ OPTION 2: MANUAL SETUP (4 STEPS)                                        │
+└──────────────────────────────────────────────────────────────────────────┘
+
+  1. Create virtual environment:
+     python3 -m venv venv
+
+  2. Activate it:
+     source venv/bin/activate
+
+  3. Install dependencies:
+     pip install -r requirements.txt
+
+  4. Set environment variable:
+     export VECTOR_PY_DIR=/Users/UPGH/github/Vanguard/netstudio
+
+
+┌──────────────────────────────────────────────────────────────────────────┐
+│ OPTION 3: QUICK START (FOR EXPERIENCED USERS)                           │
+└──────────────────────────────────────────────────────────────────────────┘
+
+  python3 -m venv venv && source venv/bin/activate && \
+  pip install -r requirements.txt && \
+  export VECTOR_PY_DIR=$(pwd)
+
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║                          RUNNING THE APPLICATION                         ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  After setup, run one of these:
+
+  python launcher.py      # TUI Interface (Recommended)
+  python api/main.py      # API Server
+  python main.py          # Legacy CLI
+
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║                            DAILY WORKFLOW                                ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  START WORKING:
+    cd /Users/UPGH/github/Vanguard/netstudio
+    source venv/bin/activate
+    python launcher.py
+
+  STOP WORKING:
+    deactivate
+
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║                           VERIFICATION                                   ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  Check if venv is active:
+    which python
+    # Should show: .../netstudio/venv/bin/python
+
+  Check installed packages:
+    pip list
+
+  Check environment variable:
+    echo $VECTOR_PY_DIR
+
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║                       TROUBLESHOOTING                                    ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  Problem: "No module named 'jnpr'"
+  Solution: source venv/bin/activate && pip install -r requirements.txt
+
+  Problem: "VECTOR_PY_DIR not set"
+  Solution: export VECTOR_PY_DIR=/Users/UPGH/github/Vanguard/netstudio
+
+  Problem: venv won't activate
+  Solution: rm -rf venv && python3 -m venv venv && source venv/bin/activate
+
+
+╔══════════════════════════════════════════════════════════════════════════╗
+║                        MORE INFORMATION                                  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+  Quick Reference:  cat VENV_QUICK_REFERENCE.md
+  Full Guide:       cat VENV_SETUP_GUIDE.md
+  README:           cat README.md
+  Quick Start:      cat QUICK_START.md
