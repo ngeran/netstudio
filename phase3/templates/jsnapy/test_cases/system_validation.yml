@@ -1,0 +1,10 @@
+command: show system uptime
+tests:
+- args:
+    delta_percentage: 10
+    post_node: system-uptime-information/system-booted-time/time-length
+    pre_node: system-uptime-information/system-booted-time/time-length
+    test_op: delta
+  id: System Uptime (should not change significantly)
+  kwargs: {}
+  test_system_uptime: delta_percentage

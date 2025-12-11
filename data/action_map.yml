@@ -1,0 +1,15 @@
+actions:
+  - name: ping
+    display_name: Connectivity Test
+  - name: interfaces
+    display_name: Configure Interfaces
+  - name: route_monitor
+    display_name: Monitor Routing Tables
+  - name: state_capture
+    display_name: Device Pre and Post State Capture
+  - name: code_upgrade
+    display_name: Code Upgrade
+  - name: config_toolbox
+    display_name: Configuration Backup and Restore
+  - name: bgp_toolbox
+    display_name: BGP Toolbox

@@ -1,0 +1,16 @@
+command: show bgp summary
+tests:
+- args:
+    post_node: bgp-information/bgp-peer/peer-state
+    pre_node: bgp-information/bgp-peer/peer-state
+    test_op: eq
+  id: BGP Neighbor State
+  kwargs: {}
+  test_bgp_neighbor_state: is_equal
+- args:
+    post_node: bgp-information/bgp-peer/peer-state
+    pre_node: bgp-information/bgp-peer/peer-state
+    test_op: count
+  id: BGP Session Count
+  kwargs: {}
+  test_bgp_session_count: no_diff

@@ -1,0 +1,76 @@
+inventory:
+  - location: "TEST-LAB"
+    routers:
+      - host_name: "TEST-DEVICE-01"
+        ip_address: "172.27.200.200"
+        vendor: "JUNIPER"
+        platform: "TEST-DEVICE"
+        username: "admin"
+        password: "manolis1"
+  - location: "ENG-DISTRICT"
+    routers:
+      - host_name: "ORIENGWANDJMX01"
+        ip_address: "10.177.102.6"
+        vendor: "JUNIPER"
+        platform: "MX480"
+      - host_name: "ORIENGWANDJMX02"
+        ip_address: "10.177.102.13"
+        vendor: "JUNIPER"
+        platform: "MX480"
+      - host_name: "ORIENGWANDJMX03"
+        ip_address: "10.177.102.16"
+        vendor: "JUNIPER"
+        platform: "MX480"
+      - host_name: "ORIENGWANDJMX04"
+        ip_address: "10.177.102.10"
+        vendor: "JUNIPER"
+        platform: "MX480"
+    switches:
+      - host_name: "ORIENGAUTDJEX01"
+        ip_address: "10.177.102.37"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: "ORIENGAUTDJEX02"
+        ip_address: "10.177.102.38"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: ORIENGAUTDJEX03
+        ip_address: "10.177.102.39"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: ORIENGAUTDJEX04
+        ip_address: "10.177.102.40"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: DC9DCIWANPJMX01
+        ip_address: "10.177.102.41"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: DC9DCIWANPJMX02
+        ip_address: "10.177.102.142"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: DC9DCIWANPJMX03
+        ip_address: "10.177.102.43"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: DC9DCIWANPJMX04
+        ip_address: "10.177.102.44"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: ORIENGOOBMDJEX10
+        ip_address: "10.177.102.4"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: ORIENGOOBMDJEX11
+        ip_address: "10.177.102.5"
+        vendor: "JUNIPER"
+        platform: "EX4600" 
+      - host_name: ORIENGAUTJEX09-PE
+        ip_address: "10.177.102.45"
+        vendor: "JUNIPER"
+        platform: "EX4600"
+      - host_name: ORIENGAUTJEX10-CE
+        ip_address: "10.177.102.46"
+        vendor: "JUNIPER"
+        platform: "EX4600"

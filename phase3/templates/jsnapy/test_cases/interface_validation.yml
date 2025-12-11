@@ -1,0 +1,16 @@
+command: show interfaces extensive
+tests:
+- args:
+    post_node: interface-information/physical-interface[name='ge-0/0/0']/oper-status
+    pre_node: interface-information/physical-interface[name='ge-0/0/0']/oper-status
+    test_op: eq
+  id: Interface Operational Status
+  kwargs: {}
+  test_interface_operational: is_equal
+- args:
+    post_node: interface-information/physical-interface[name='ge-0/0/0']/admin-status
+    pre_node: interface-information/physical-interface[name='ge-0/0/0']/admin-status
+    test_op: eq
+  id: Interface Admin Status
+  kwargs: {}
+  test_interface_admin_status: is_equal
