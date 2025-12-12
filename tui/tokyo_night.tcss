@@ -1215,3 +1215,56 @@ Bar {
 #bgp_tabs TabPane {
     padding: 1;
 }
+
+/* ==================== THEME SELECTOR STYLING ==================== */
+
+/* Theme Selector Container */
+.theme-selector-container {
+    background: #1a1b26;
+    border: heavy #7aa2f7;
+    padding: 2;
+    margin: 1;
+    height: auto;
+}
+
+.theme-content {
+    height: auto;
+    padding: 1;
+}
+
+.theme-description {
+    color: #c0caf5;
+    text-align: center;
+    padding: 1;
+    margin: 0 0 2 0;
+    background: #24283b;
+    border: solid #414868;
+}
+
+.theme-label {
+    color: #7dcfff;
+    text-style: bold;
+    padding: 0 0 1 0;
+}
+
+.theme-preview {
+    background: #16161e;
+    border: solid #414868;
+    padding: 1;
+    margin: 1 0;
+    color: #9ece6a;
+    height: 8;
+}
+
+.button-container {
+    height: auto;
+    padding: 1 0 0 0;
+    margin: 2 0 0 0;
+    border-top: solid #414868;
+    align: center middle;
+}
+
+.button-container Button {
+    margin: 0 2;
+    min-width: 12;
+}

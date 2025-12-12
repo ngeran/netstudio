@@ -63,6 +63,9 @@ class MenuBar(Horizontal):
         yield Button(
             "❓ Help", id="menu_help", variant="default", classes="menu-button"
         )
+        yield Button(
+            "🎨 Theme", id="menu_theme", variant="default", classes="menu-button"
+        )
 
         # Right side - Status indicators
         yield Static("", id="connection_status", classes="menu-status")
@@ -122,6 +125,8 @@ class MenuBar(Horizontal):
             self.app.action_config()
         elif button_id == "menu_help":
             self.app.action_help()
+        elif button_id == "menu_theme":
+            self.app.action_theme_selector()
 
     def _set_active_menu(self, menu_id: str):
         """Set the active menu item"""

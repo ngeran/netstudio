@@ -256,17 +256,17 @@ class BGPToolboxScreen(Screen):
             self.app.pop_screen()
 
         elif button_id == "btn_refresh":
-            await self._refresh_bgp_data()
+            self._refresh_bgp_data()
 
         elif button_id == "btn_export":
-            await self._export_report()
+            self._export_report()
 
     def on_select_changed(self, event: Select.Changed):
         """Handle device selection changes"""
         if event.select.id == "device_select":
             self.selected_device = event.value
             # Auto-refresh when device changes
-            asyncio.create_task(self._refresh_bgp_data())
+            self._refresh_bgp_data()
 
     @work(exclusive=True)
     async def _refresh_bgp_data(self):

@@ -24,15 +24,45 @@ sys.path.insert(0, str(project_root))
 from tui.services.inventory_service import InventoryService
 from tui.models.device import Device
 from tui.services.api_client import APIService
+from tui.components.theme_selector import load_theme_preference, get_theme_path
 
 
 class NetworkAutomationApp(App):
     """Main TUI application for network automation"""
 
-    # Load Tokyo Night theme
-    CSS_PATH = str(Path(__file__).parent.parent / "tokyo_night.tcss")
+    # Dynamic theme loading
+    def __init__(self):
+        # Load theme preference first, then initialize app
+        preferred_theme = load_theme_preference()
+        css_path = str(get_theme_path(preferred_theme))
 
-    TITLE = "🌃 Network Automation TUI - Tokyo Night"
+        super().__init__(css_path=css_path)
+
+        self.app_theme = preferred_theme
+        self._update_title()
+
+    def set_theme(self, theme_id: str) -> None:
+        """Set the current theme"""
+        self.app_theme = theme_id
+        new_css_path = str(get_theme_path(theme_id))
+
+        # Reload the stylesheet
+        self.stylesheet.load(new_css_path)
+
+        self._update_title()
+
+    def _update_title(self):
+        """Update app title based on current theme"""
+        theme_names = {
+            "tokyo_night": "🌃 Tokyo Night",
+            "nord": "❄️ Nord",
+            "gruvbox": "🟨 GruvBox"
+        }
+        theme_name = theme_names.get(self.app_theme, "🌃 Tokyo Night")
+        self.TITLE = f"Network Automation TUI - {theme_name}"
+        self.sub_title = "Juniper Device Management"
+
+    TITLE = "Network Automation TUI"
     SUB_TITLE = "Juniper Device Management"
 
     BINDINGS = [
@@ -48,6 +78,7 @@ class NetworkAutomationApp(App):
         Binding("u", "code_upgrade", "Code Upgrade"),
         Binding("h", "help", "Help"),
         Binding("F1", "dashboard", "Dashboard"),
+        Binding("F2", "theme_selector", "Theme"),
     ]
 
     inventory_service: reactive[InventoryService] = reactive(InventoryService())
@@ -151,6 +182,10 @@ class NetworkAutomationApp(App):
             "Dashboard is the home screen! Press ESC to return.", severity="information"
         )
 
+    def action_theme_selector(self) -> None:
+        """Open theme selector"""
+        self.show_theme_selector()
+
     def action_create_template(self) -> None:
         """Create new template"""
         self.show_template_editor()
@@ -220,6 +255,12 @@ class NetworkAutomationApp(App):
         from tui.components.code_upgrade_screen import CodeUpgradeScreen
 
         self.push_screen(CodeUpgradeScreen(self.inventory_service, self.api_service))
+
+    def show_theme_selector(self) -> None:
+        """Navigate to theme selector screen"""
+        from tui.components.theme_selector import ThemeSelectorScreen
+
+        self.push_screen(ThemeSelectorScreen())
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         """Handle button press events"""
@@ -407,4 +448,5 @@ class InventoryEditorScreen(Screen):
 
 if __name__ == "__main__":
     app = NetworkAutomationApp()
+    app.run()
 

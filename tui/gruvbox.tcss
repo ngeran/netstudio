@@ -1,0 +1,626 @@
+/* GruvBox Theme for NetStudio TUI */
+/* Inspired by the beautiful GruvBox color scheme */
+
+/* ==================== Core Colors ==================== */
+/* Background: #282828 (GruvBox dark0_hard) */
+/* Foreground: #ebdbb2 (GruvBox light0) */
+/* Selection: #3c3836 (GruvBox dark0_soft) */
+/* Accent Blue: #83a598 (GruvBox blue) */
+/* Accent Cyan: #8ec07c (GruvBox aqua) */
+/* Accent Green: #b8bb26 (GruvBox green) */
+/* Accent Yellow: #fabd2f (GruvBox yellow) */
+/* Accent Red: #fb4934 (GruvBox red) */
+/* Accent Orange: #fe8019 (GruvBox orange) */
+/* Accent Purple: #d3869b (GruvBox purple) */
+
+/* ==================== Screen Base ==================== */
+Screen {
+    background: #282828;
+    color: #ebdbb2;
+}
+
+/* ==================== Headers & Titles ==================== */
+Header {
+    background: #3c3836;
+    color: #8ec07c;
+    text-style: bold;
+    height: 3;
+    border: heavy #504945;
+    box-sizing: border-box;
+}
+
+Footer {
+    background: #3c3836;
+    color: #83a598;
+    height: 1;
+}
+
+.title {
+    text-style: bold;
+    color: #d3869b;
+    background: #282828;
+    padding: 1;
+}
+
+/* ==================== Buttons ==================== */
+Button {
+    background: #504945;
+    color: #ebdbb2;
+    border: tall #665c54;
+    min-width: 16;
+    height: 3;
+    text-style: bold;
+}
+
+Button:hover {
+    background: #665c54;
+    color: #8ec07c;
+    border: tall #83a598;
+}
+
+Button:focus {
+    background: #83a598;
+    color: #282828;
+    border: tall #d3869b;
+    text-style: bold;
+}
+
+Button.-primary {
+    background: #83a598;
+    color: #282828;
+    text-style: bold;
+    border: tall #d3869b;
+}
+
+Button.-primary:hover {
+    background: #a89984;
+    color: #282828;
+}
+
+Button.-success {
+    background: #b8bb26;
+    color: #282828;
+    text-style: bold;
+    border: tall #b8bb26;
+}
+
+Button.-success:hover {
+    background: #c8c93a;
+    color: #282828;
+}
+
+Button.-warning {
+    background: #fabd2f;
+    color: #282828;
+    text-style: bold;
+    border: tall #fe8019;
+}
+
+Button.-warning:hover {
+    background: #fe8019;
+    color: #282828;
+}
+
+Button.-error {
+    background: #fb4934;
+    color: #282828;
+    text-style: bold;
+    border: tall #fb4934;
+}
+
+Button.-error:hover {
+    background: #fc5843;
+    color: #282828;
+}
+
+Button:disabled {
+    background: #3c3836;
+    color: #665c54;
+    text-style: dim;
+}
+
+/* ==================== Input Fields ==================== */
+Input {
+    background: #3c3836;
+    color: #ebdbb2;
+    border: tall #504945;
+    padding: 0 1;
+}
+
+Input:focus {
+    background: #3c3836;
+    color: #8ec07c;
+    border: tall #83a598;
+}
+
+Input.-valid {
+    border: tall #b8bb26;
+}
+
+Input.-invalid {
+    border: tall #fb4934;
+}
+
+TextArea {
+    background: #3c3836;
+    color: #ebdbb2;
+    border: heavy #504945;
+}
+
+TextArea:focus {
+    background: #3c3836;
+    color: #ebdbb2;
+    border: heavy #83a598;
+}
+
+/* ==================== Select & Options ==================== */
+Select {
+    background: #3c3836;
+    color: #ebdbb2;
+    border: tall #504945;
+}
+
+Select:focus {
+    background: #3c3836;
+    color: #8ec07c;
+    border: tall #83a598;
+}
+
+Select > SelectCurrent {
+    background: #504945;
+    color: #ebdbb2;
+}
+
+Select > SelectCurrent:hover {
+    background: #665c54;
+    color: #8ec07c;
+}
+
+SelectOverlay {
+    background: #282828;
+    border: heavy #83a598;
+    box-sizing: border-box;
+}
+
+OptionList {
+    background: #3c3836;
+    color: #ebdbb2;
+}
+
+OptionList > Option {
+    background: #3c3836;
+    color: #ebdbb2;
+}
+
+OptionList > Option:hover {
+    background: #504945;
+    color: #8ec07c;
+}
+
+OptionList > .option--highlighted {
+    background: #83a598;
+    color: #282828;
+    text-style: bold;
+}
+
+/* ==================== Tables ==================== */
+DataTable {
+    background: #282828;
+    color: #ebdbb2;
+    height: 100%;
+}
+
+DataTable > .datatable--header {
+    background: #3c3836;
+    color: #8ec07c;
+    text-style: bold;
+}
+
+DataTable > .datatable--cursor {
+    background: #83a598;
+    color: #282828;
+    text-style: bold;
+}
+
+DataTable > .datatable--hover {
+    background: #3c3836;
+    color: #ebdbb2;
+}
+
+DataTable > .datatable--odd-row {
+    background: #282828;
+}
+
+DataTable > .datatable--even-row {
+    background: #1d2021;
+}
+
+/* ==================== Containers ==================== */
+Container {
+    background: #282828;
+    color: #ebdbb2;
+    border: none;
+}
+
+Vertical {
+    background: #282828;
+    color: #ebdbb2;
+}
+
+Horizontal {
+    background: #282828;
+    color: #ebdbb2;
+}
+
+/* ==================== Labels ==================== */
+Label {
+    color: #ebdbb2;
+    background: transparent;
+}
+
+.label-accent {
+    color: #8ec07c;
+    text-style: bold;
+}
+
+.label-success {
+    color: #b8bb26;
+    text-style: bold;
+}
+
+.label-warning {
+    color: #fabd2f;
+    text-style: bold;
+}
+
+.label-error {
+    color: #fb4934;
+    text-style: bold;
+}
+
+.label-info {
+    color: #83a598;
+}
+
+/* ==================== Static Text ==================== */
+Static {
+    background: transparent;
+    color: #ebdbb2;
+}
+
+.static-highlight {
+    background: #3c3836;
+    color: #8ec07c;
+}
+
+/* ==================== Scrollbars ==================== */
+Scrollbar {
+    background: #3c3836;
+}
+
+Scrollbar:hover {
+    background: #504945;
+}
+
+ScrollbarCorner {
+    background: #282828;
+}
+
+/* ==================== Tree ==================== */
+Tree {
+    background: #282828;
+    color: #ebdbb2;
+}
+
+Tree > .tree--cursor {
+    background: #83a598;
+    color: #282828;
+    text-style: bold;
+}
+
+Tree > .tree--highlight {
+    background: #3c3836;
+    color: #ebdbb2;
+}
+
+/* ==================== Tabs ==================== */
+Tabs {
+    background: #282828;
+}
+
+TabPane {
+    background: #282828;
+    color: #ebdbb2;
+}
+
+Tab {
+    background: #3c3836;
+    color: #ebdbb2;
+    border: none;
+}
+
+Tab:hover {
+    background: #504945;
+    color: #8ec07c;
+}
+
+Tab.-active {
+    background: #83a598;
+    color: #282828;
+    text-style: bold;
+}
+
+Underline {
+    color: #83a598;
+}
+
+/* ==================== Loading & Progress ==================== */
+LoadingIndicator {
+    color: #83a598;
+    background: #282828;
+}
+
+ProgressBar {
+    background: #3c3836;
+}
+
+Bar {
+    background: #83a598;
+}
+
+/* ==================== Borders & Frames ==================== */
+.bordered {
+    border: heavy #504945;
+    background: #282828;
+}
+
+.bordered-accent {
+    border: heavy #83a598;
+    background: #282828;
+}
+
+.bordered-success {
+    border: heavy #b8bb26;
+    background: #282828;
+}
+
+.bordered-warning {
+    border: heavy #fabd2f;
+    background: #282828;
+}
+
+.bordered-error {
+    border: heavy #fb4934;
+    background: #282828;
+}
+
+/* ==================== Status Indicators ==================== */
+.status-online {
+    color: #b8bb26;
+    text-style: bold;
+}
+
+.status-offline {
+    color: #665c54;
+    text-style: dim;
+}
+
+.status-error {
+    color: #fb4934;
+    text-style: bold;
+}
+
+.status-warning {
+    color: #fabd2f;
+}
+
+/* ==================== Cards & Panels ==================== */
+.card {
+    background: #3c3836;
+    border: tall #504945;
+    padding: 1;
+    margin: 1;
+}
+
+.card-header {
+    background: #504945;
+    color: #8ec07c;
+    text-style: bold;
+    padding: 0 1;
+}
+
+.panel {
+    background: #282828;
+    border: heavy #504945;
+    padding: 1;
+}
+
+.panel-title {
+    color: #d3869b;
+    text-style: bold;
+    background: #3c3836;
+    padding: 0 1;
+}
+
+/* ==================== Action Bar ==================== */
+.action-bar {
+    background: #3c3836;
+    height: auto;
+    padding: 1;
+    border: tall #504945;
+}
+
+/* ==================== Device Browser Specific ==================== */
+#device_table {
+    background: #282828;
+    border: heavy #504945;
+}
+
+#search_input {
+    border: tall #83a598;
+}
+
+.filter-button {
+    background: #504945;
+    color: #ebdbb2;
+    border: tall #665c54;
+}
+
+.filter-button:hover {
+    background: #83a598;
+    color: #282828;
+}
+
+/* ==================== Dashboard Specific ==================== */
+.dashboard-title {
+    text-align: center;
+    text-style: bold;
+    color: #8ec07c;
+    background: #3c3836;
+    padding: 1;
+    margin: 0 0 1 0;
+    border: heavy #83a598;
+}
+
+.dashboard-subtitle {
+    text-align: center;
+    color: #ebdbb2;
+    background: #282828;
+    padding: 0 0 1 0;
+}
+
+.stat-card {
+    width: 1fr;
+    height: 5;
+    border: tall #504945;
+    padding: 1;
+    margin: 0 1;
+    background: #3c3836;
+}
+
+.stat-card.card-primary {
+    border: tall #83a598;
+}
+
+.stat-card.card-success {
+    border: tall #b8bb26;
+}
+
+.stat-card.card-error {
+    border: tall #fb4934;
+}
+
+.stat-card.card-warning {
+    border: tall #fabd2f;
+}
+
+.stat-card.card-info {
+    border: tall #8ec07c;
+}
+
+.stat-title {
+    color: #8ec07c;
+    text-style: bold;
+    padding: 0 0 1 0;
+}
+
+.stat-value {
+    color: #ebdbb2;
+    text-style: bold;
+    text-align: center;
+}
+
+/* ==================== Menu Bar ==================== */
+.menu-bar {
+    dock: top;
+    height: 3;
+    background: #3c3836;
+    border-bottom: heavy #83a598;
+    padding: 0 1;
+    align: center middle;
+}
+
+.menu-logo {
+    color: #8ec07c;
+    text-style: bold;
+    padding: 0 2 0 0;
+    width: auto;
+}
+
+.menu-button {
+    min-width: 12;
+    height: 1;
+    margin: 0 1;
+    border: none;
+}
+
+.menu-button.-primary {
+    background: #83a598;
+    color: #282828;
+    text-style: bold;
+}
+
+.menu-button:hover {
+    background: #665c54;
+    color: #8ec07c;
+}
+
+.menu-status {
+    width: auto;
+    padding: 0 1;
+    color: #ebdbb2;
+    text-align: right;
+}
+
+/* ==================== THEME SELECTOR STYLING ==================== */
+
+/* Theme Selector Container */
+.theme-selector-container {
+    background: #282828;
+    border: heavy #83a598;
+    padding: 2;
+    margin: 1;
+    height: auto;
+}
+
+.theme-content {
+    height: auto;
+    padding: 1;
+}
+
+.theme-description {
+    color: #ebdbb2;
+    text-align: center;
+    padding: 1;
+    margin: 0 0 2 0;
+    background: #3c3836;
+    border: solid #504945;
+}
+
+.theme-label {
+    color: #8ec07c;
+    text-style: bold;
+    padding: 0 0 1 0;
+}
+
+.theme-preview {
+    background: #282828;
+    border: solid #504945;
+    padding: 1;
+    margin: 1 0;
+    color: #b8bb26;
+    height: 8;
+}
+
+.button-container {
+    height: auto;
+    padding: 1 0 0 0;
+    margin: 2 0 0 0;
+    border-top: solid #504945;
+    align: center middle;
+}
+
+.button-container Button {
+    margin: 0 2;
+    min-width: 12;
+}

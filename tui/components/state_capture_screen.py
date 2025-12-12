@@ -463,13 +463,13 @@ Click "Next" to view the differences.
                 self._render_step()
 
         elif button_id == "btn_pre_capture":
-            await self._capture_pre_state()
+            self._capture_pre_state()
 
         elif button_id == "btn_post_capture":
-            await self._capture_post_state()
+            self._capture_post_state()
 
         elif button_id == "btn_compare":
-            await self._compare_states()
+            self._compare_states()
 
     @work(exclusive=True)
     async def _capture_pre_state(self):

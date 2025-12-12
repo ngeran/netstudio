@@ -26,17 +26,17 @@ from api.services.device_manager import EnhancedDeviceManager
 from api.services.task_manager import TaskManager, TaskStatus
 from tui.services.inventory_service import InventoryService
 
-# Phase 3 services
-from phase3.services.jsnapy_service import JSNAPyService
-from phase3.services.monitoring_service import MonitoringService
-from phase3.services.topology_service import TopologyService
-from phase3.services.reporting_service import ReportingService
+# Phase 3 services (commented out - modules not implemented yet)
+# from phase3.services.jsnapy_service import JSNAPyService
+# from phase3.services.monitoring_service import MonitoringService
+# from phase3.services.topology_service import TopologyService
+# from phase3.services.reporting_service import ReportingService
 
-# Phase 3 API endpoints
-from phase3.api.endpoints.validation import router as validation_router
-from phase3.api.endpoints.monitoring import router as monitoring_router
-from phase3.api.endpoints.topology import router as topology_router
-from phase3.api.endpoints.reports import router as reports_router
+# Phase 3 API endpoints (commented out - modules not implemented yet)
+# from phase3.api.endpoints.validation import router as validation_router
+# from phase3.api.endpoints.monitoring import router as monitoring_router
+# from phase3.api.endpoints.topology import router as topology_router
+# from phase3.api.endpoints.reports import router as reports_router
 
 # Configure logging
 logging.basicConfig(
@@ -72,11 +72,11 @@ device_manager = EnhancedDeviceManager()
 task_manager = TaskManager()
 inventory_service = InventoryService()
 
-# Phase 3 services
-jsnapy_service = JSNAPyService()
-monitoring_service = MonitoringService()
-topology_service = TopologyService()
-reporting_service = ReportingService()
+# Phase 3 services (commented out - modules not implemented yet)
+# jsnapy_service = JSNAPyService()
+# monitoring_service = MonitoringService()
+# topology_service = TopologyService()
+# reporting_service = ReportingService()
 
 
 # Pydantic models for API
@@ -198,26 +198,26 @@ async def root():
 async def health_check():
     """Health check endpoint"""
     stats = task_manager.get_statistics()
-    monitoring_status = monitoring_service.get_monitoring_status()
+    # monitoring_status = monitoring_service.get_monitoring_status()  # Commented out - service not available
 
     return {
         "status": "healthy",
         "timestamp": datetime.now().isoformat(),
-        "version": "3.0.0",
+        "version": "2.0.0",  # Changed to 2.0.0 since phase3 is not implemented
         "services": {
             "device_manager": "running",
             "task_manager": "running",
             "inventory_service": "running",
-            "validation_service": "active",
-            "monitoring_service": monitoring_status.get("status", "inactive"),
-            "topology_service": "active",
-            "reporting_service": "active"
+            "validation_service": "inactive",  # Phase 3 service not available
+            "monitoring_service": "inactive",   # Phase 3 service not available
+            "topology_service": "inactive",     # Phase 3 service not available
+            "reporting_service": "inactive"     # Phase 3 service not available
         },
         "pyez_available": True,
         "monitoring": {
-            "active_devices": monitoring_status["monitored_devices"],
-            "collection_interval": monitoring_status["interval"],
-            "monitoring_active": monitoring_status["active"]
+            "active_devices": 0,
+            "collection_interval": "N/A",
+            "monitoring_active": False
         },
         "statistics": stats
     }
@@ -519,11 +519,11 @@ async def ping_test(device_ips: List[str], target: str = "8.8.8.8"):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# Include Phase 3 routers
-app.include_router(validation_router)
-app.include_router(monitoring_router)
-app.include_router(topology_router)
-app.include_router(reports_router)
+# Include Phase 3 routers (commented out - modules not implemented yet)
+# app.include_router(validation_router)
+# app.include_router(monitoring_router)
+# app.include_router(topology_router)
+# app.include_router(reports_router)
 
 
 # WebSocket endpoint
@@ -558,22 +558,22 @@ async def startup_event():
     logger.info("Network Automation API starting up...")
     logger.info(f"PyEZ available: True (system installation)")
 
-    # Phase 3 services initialization
-    logger.info("Initializing Phase 3 services...")
-    logger.info("JSNAPy Validation Service: Ready")
-    logger.info("Monitoring Service: Ready (real-time telemetry)")
-    logger.info("Topology Service: Ready (network discovery)")
-    logger.info("Reporting Service: Ready (analytics)")
+    # Phase 3 services initialization (commented out - not implemented)
+    # logger.info("Initializing Phase 3 services...")
+    # logger.info("JSNAPy Validation Service: Ready")
+    # logger.info("Monitoring Service: Ready (real-time telemetry)")
+    # logger.info("Topology Service: Ready (network discovery)")
+    # logger.info("Reporting Service: Ready (analytics)")
 
-    # Include Phase 3 routers
-    logger.info("Including Phase 3 API endpoints:")
-    logger.info("  - /api/validation/*")
-    logger.info("  - /api/monitoring/*")
-    logger.info("  - /api/topology/*")
-    logger.info("  - /api/reports/*")
+    # Include Phase 3 routers (commented out - not implemented)
+    # logger.info("Including Phase 3 API endpoints:")
+    # logger.info("  - /api/validation/*")
+    # logger.info("  - /api/monitoring/*")
+    # logger.info("  - /api/topology/*")
+    # logger.info("  - /api/reports/*")
 
-    logger.info("Network Automation API v3.0 ready for connections")
-    logger.info("Phase 3 features enabled: Validation, Monitoring, Topology, Reporting")
+    logger.info("Network Automation API v2.0 ready for connections")
+    logger.info("Phase 3 features disabled - modules not implemented")
 
 
 @app.on_event("shutdown")

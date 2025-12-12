@@ -500,7 +500,7 @@ class CodeUpgradeScreen(Screen):
                 self._render_step()
 
         elif button_id == "btn_upgrade":
-            await self._start_upgrade()
+            self._start_upgrade()
 
     @work(exclusive=True)
     async def _start_upgrade(self):

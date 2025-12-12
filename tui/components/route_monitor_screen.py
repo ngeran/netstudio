@@ -194,7 +194,7 @@ class RouteMonitorScreen(Screen):
             self.app.pop_screen()
 
         elif button_id == "btn_start":
-            await self._start_monitoring()
+            self._start_monitoring()
 
         elif button_id == "btn_stop":
             await self._stop_monitoring()
