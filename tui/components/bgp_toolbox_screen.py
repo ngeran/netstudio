@@ -14,22 +14,13 @@ from typing import List, Dict, Any, Optional
 from textual.screen import Screen
 from textual.containers import Container, Horizontal, Vertical, VerticalScroll
 from textual.widgets import (
-    Header,
-    Footer,
-    Button,
-    Static,
-    DataTable,
-    Select,
-    Label,
-    TabbedContent,
-    TabPane,
+    Header, Footer, Button, Static, DataTable, Select, Label, TabbedContent, TabPane
 )
 from textual.reactive import reactive
 from textual import work
 
 # Import legacy BGP functions
 import sys
-
 project_root = Path(__file__).parent.parent.parent
 sys.path.insert(0, str(project_root))
 
@@ -82,27 +73,19 @@ class BGPToolboxScreen(Screen):
                         for d in self.available_devices
                     ]
                     yield Select(
-                        options=device_options
-                        if device_options
-                        else [("No devices", "none")],
+                        options=device_options if device_options else [("No devices", "none")],
                         id="device_select",
-                        allow_blank=False,
+                        allow_blank=False
                     )
 
                 with Vertical(classes="control-section"):
                     yield Label("Actions:")
                     with Horizontal():
                         yield Button("🔄 Refresh", id="btn_refresh", variant="primary")
-                        yield Button(
-                            "📊 Export Report", id="btn_export", variant="default"
-                        )
+                        yield Button("📊 Export Report", id="btn_export", variant="default")
 
             # Status bar
-            yield Static(
-                "Select a device to view BGP information",
-                id="bgp_status",
-                classes="bgp-status",
-            )
+            yield Static("Select a device to view BGP information", id="bgp_status", classes="bgp-status")
 
             # Tabbed content area
             with TabbedContent(id="bgp_tabs"):
@@ -119,13 +102,8 @@ class BGPToolboxScreen(Screen):
                 # Tab 3: Peer Details
                 with TabPane("Peer Details", id="tab_details"):
                     yield Static("Detailed Peer Information", classes="panel-title")
-                    with VerticalScroll(
-                        id="peer_details_scroll", classes="peer-details"
-                    ):
-                        yield Static(
-                            "Select a device and click Refresh to view peer details",
-                            id="peer_details_content",
-                        )
+                    with VerticalScroll(id="peer_details_scroll", classes="peer-details"):
+                        yield Static("Select a device and click Refresh to view peer details", id="peer_details_content")
 
         yield Button("🔙 Back", id="btn_back")
         yield Footer()
@@ -178,7 +156,7 @@ class BGPToolboxScreen(Screen):
                 state_display,
                 peer.get("received_routes", "0"),
                 peer.get("advertised_routes", "0"),
-                peer.get("uptime", "-"),
+                peer.get("uptime", "-")
             )
 
     def _update_routes_table(self, routes: List[Dict]):
@@ -196,7 +174,7 @@ class BGPToolboxScreen(Screen):
                 route.get("next_hop", "-"),
                 route.get("as_path", "-"),
                 route.get("med", "-"),
-                route.get("local_pref", "-"),
+                route.get("local_pref", "-")
             )
 
     def _update_peer_details(self, peer_details: List[Dict]):
@@ -209,9 +187,7 @@ class BGPToolboxScreen(Screen):
 
         output = []
         for peer in peer_details:
-            output.append(
-                f"\n[bold cyan]Peer: {peer.get('peer_address', 'Unknown')}[/]"
-            )
+            output.append(f"\n[bold cyan]Peer: {peer.get('peer_address', 'Unknown')}[/]")
             output.append(f"  [bold]AS Number:[/] {peer.get('peer_as', 'N/A')}")
             output.append(f"  [bold]State:[/] {peer.get('state', 'Unknown')}")
             output.append(f"  [bold]Router ID:[/] {peer.get('router_id', 'N/A')}")
@@ -224,24 +200,20 @@ class BGPToolboxScreen(Screen):
             output.append(f"    Active: {peer.get('active_routes', '0')}")
 
             # Advertised routes
-            if peer.get("advertised_prefixes"):
+            if peer.get('advertised_prefixes'):
                 output.append(f"\n  [bold green]Advertised Prefixes:[/]")
-                for prefix in peer["advertised_prefixes"][:10]:  # Show first 10
+                for prefix in peer['advertised_prefixes'][:10]:  # Show first 10
                     output.append(f"    • {prefix}")
-                if len(peer["advertised_prefixes"]) > 10:
-                    output.append(
-                        f"    [dim]... and {len(peer['advertised_prefixes']) - 10} more[/]"
-                    )
+                if len(peer['advertised_prefixes']) > 10:
+                    output.append(f"    [dim]... and {len(peer['advertised_prefixes']) - 10} more[/]")
 
             # Received routes
-            if peer.get("received_prefixes"):
+            if peer.get('received_prefixes'):
                 output.append(f"\n  [bold blue]Received Prefixes:[/]")
-                for prefix in peer["received_prefixes"][:10]:  # Show first 10
+                for prefix in peer['received_prefixes'][:10]:  # Show first 10
                     output.append(f"    • {prefix}")
-                if len(peer["received_prefixes"]) > 10:
-                    output.append(
-                        f"    [dim]... and {len(peer['received_prefixes']) - 10} more[/]"
-                    )
+                if len(peer['received_prefixes']) > 10:
+                    output.append(f"    [dim]... and {len(peer['received_prefixes']) - 10} more[/]")
 
             output.append("\n" + "─" * 60)
 
@@ -256,16 +228,17 @@ class BGPToolboxScreen(Screen):
             self.app.pop_screen()
 
         elif button_id == "btn_refresh":
-            self._refresh_bgp_data()
+            await self._refresh_bgp_data()
 
         elif button_id == "btn_export":
-            self._export_report()
+            await self._export_report()
 
     def on_select_changed(self, event: Select.Changed):
         """Handle device selection changes"""
         if event.select.id == "device_select":
             self.selected_device = event.value
             # Auto-refresh when device changes
+            # @work decorated methods are called directly, not with create_task
             self._refresh_bgp_data()
 
     @work(exclusive=True)
@@ -285,12 +258,8 @@ class BGPToolboxScreen(Screen):
         try:
             # Get device credentials
             device = next(
-                (
-                    d
-                    for d in self.available_devices
-                    if d.ip_address == self.selected_device
-                ),
-                None,
+                (d for d in self.available_devices if d.ip_address == self.selected_device),
+                None
             )
 
             if not device:
@@ -302,7 +271,10 @@ class BGPToolboxScreen(Screen):
             # Connect to device
             if not self.device_connection:
                 connections = await asyncio.to_thread(
-                    connect_to_hosts, [self.selected_device], username, password
+                    connect_to_hosts,
+                    [self.selected_device],
+                    username,
+                    password
                 )
 
                 if not connections:
@@ -312,25 +284,29 @@ class BGPToolboxScreen(Screen):
 
             # Check if BGP is running
             self.bgp_running = await asyncio.to_thread(
-                self._check_bgp_running, self.device_connection
+                self._check_bgp_running,
+                self.device_connection
             )
 
             if not self.bgp_running:
-                status_widget.update(
-                    "⚠️ BGP is not configured or running on this device"
-                )
+                status_widget.update("⚠️ BGP is not configured or running on this device")
                 self.notify("BGP is not running on this device", severity="warning")
                 return
 
             # Fetch BGP data in parallel
-            peers_task = asyncio.to_thread(self._get_bgp_peers, self.device_connection)
+            peers_task = asyncio.to_thread(
+                self._get_bgp_peers,
+                self.device_connection
+            )
 
             routes_task = asyncio.to_thread(
-                self._get_bgp_routes, self.device_connection
+                self._get_bgp_routes,
+                self.device_connection
             )
 
             details_task = asyncio.to_thread(
-                self._get_peer_details, self.device_connection
+                self._get_peer_details,
+                self.device_connection
             )
 
             peers_data, routes_data, details_data = await asyncio.gather(
@@ -384,8 +360,7 @@ class BGPToolboxScreen(Screen):
                     "peer_as": peer.findtext("peer-as") or "-",
                     "state": peer.findtext("peer-state") or "Unknown",
                     "received_routes": peer.findtext("received-prefix-count") or "0",
-                    "advertised_routes": peer.findtext("advertised-prefix-count")
-                    or "0",
+                    "advertised_routes": peer.findtext("advertised-prefix-count") or "0",
                     "active_routes": peer.findtext("active-prefix-count") or "0",
                     "uptime": peer.findtext("elapsed-time") or "-",
                 }
@@ -442,8 +417,7 @@ class BGPToolboxScreen(Screen):
                     "group": peer_to_group.get(peer_ip, "Unknown"),
                     "uptime": peer.findtext("elapsed-time") or "-",
                     "received_routes": peer.findtext("received-prefix-count") or "0",
-                    "advertised_routes": peer.findtext("advertised-prefix-count")
-                    or "0",
+                    "advertised_routes": peer.findtext("advertised-prefix-count") or "0",
                     "active_routes": peer.findtext("active-prefix-count") or "0",
                     "advertised_prefixes": [],
                     "received_prefixes": [],
@@ -488,10 +462,7 @@ class BGPToolboxScreen(Screen):
             return
 
         try:
-            report_file = (
-                self.reports_dir
-                / f"bgp_report_{self.selected_device}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
-            )
+            report_file = self.reports_dir / f"bgp_report_{self.selected_device}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"
 
             with open(report_file, "w") as f:
                 f.write(f"BGP Report: {self.selected_device}\n")
@@ -500,9 +471,7 @@ class BGPToolboxScreen(Screen):
 
                 f.write("BGP Peer Summary:\n")
                 f.write("-" * 80 + "\n")
-                f.write(
-                    f"{'Peer Address':<18} {'AS':<10} {'State':<12} {'Received':<12} {'Advertised':<12} {'Uptime':<12}\n"
-                )
+                f.write(f"{'Peer Address':<18} {'AS':<10} {'State':<12} {'Received':<12} {'Advertised':<12} {'Uptime':<12}\n")
                 f.write("-" * 80 + "\n")
 
                 for peer in self.bgp_peers:
@@ -526,7 +495,10 @@ class BGPToolboxScreen(Screen):
         """Clean up device connection"""
         if self.device_connection:
             try:
-                await asyncio.to_thread(disconnect_from_hosts, [self.device_connection])
+                await asyncio.to_thread(
+                    disconnect_from_hosts,
+                    [self.device_connection]
+                )
             except Exception as e:
                 logger.error(f"Error disconnecting: {e}")
             self.device_connection = None

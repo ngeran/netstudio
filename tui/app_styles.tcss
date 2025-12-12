@@ -1,0 +1,644 @@
+/*
+ * Custom Component Styles for NetStudio TUI
+ * Uses CSS variables from the active theme
+ */
+
+/* ==================== Dashboard ==================== */
+
+.dashboard-title {
+    text-style: bold;
+    color: $primary;
+    text-align: center;
+    padding: 1 0;
+    width: 100%;
+}
+
+.dashboard-subtitle {
+    color: $text-muted;
+    text-align: center;
+    padding: 0 0 1 0;
+    width: 100%;
+}
+
+/* Stats Cards Row */
+.stats-row {
+    height: 5;
+    margin: 0 0 1 0;
+    padding: 0 1;
+}
+
+.stat-card {
+    width: 1fr;
+    height: 100%;
+    background: $surface;
+    border: tall $panel;
+    padding: 0 1;
+    content-align: center middle;
+}
+
+.stat-card.card-primary {
+    border: tall $primary;
+}
+
+.stat-card.card-success {
+    border: tall $success;
+}
+
+.stat-card.card-error {
+    border: tall $error;
+}
+
+.stat-card.card-warning {
+    border: tall $warning;
+}
+
+.stat-card.card-info {
+    border: tall $secondary;
+}
+
+.stat-title {
+    text-align: center;
+    color: $text;
+}
+
+.stat-value {
+    text-align: center;
+    text-style: bold;
+    color: $primary;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    grid-size: 3;
+    grid-gutter: 1;
+    height: 1fr;
+    padding: 0 1;
+}
+
+.dashboard-panel {
+    height: 100%;
+    background: $surface;
+    border: heavy $panel;
+    padding: 1;
+}
+
+.panel-title {
+    text-style: bold;
+    color: $primary;
+    padding: 0 0 1 0;
+}
+
+.subsection-title {
+    text-style: bold;
+    color: $secondary;
+    padding: 1 0 0 0;
+}
+
+/* Quick Actions Panel */
+.quick-actions-panel {
+    width: 1fr;
+}
+
+.quick-actions-grid {
+    height: 1fr;
+}
+
+.quick-actions-grid Button {
+    width: 100%;
+    margin: 0 0 1 0;
+}
+
+/* Recent Activity Panel */
+.recent-activity-panel {
+    width: 1fr;
+}
+
+.activity-table {
+    height: 1fr;
+    background: $background;
+}
+
+/* System Status Panel */
+.system-status-panel {
+    width: 1fr;
+}
+
+.status-row {
+    height: auto;
+    padding: 0 0 1 0;
+}
+
+.status-row Label {
+    width: auto;
+    color: $text;
+    padding: 0 1 0 0;
+}
+
+.status-row Static {
+    width: 1fr;
+}
+
+.status-online {
+    color: $success;
+}
+
+.status-warning {
+    color: $warning;
+}
+
+.status-error {
+    color: $error;
+}
+
+.spacer {
+    height: 1;
+}
+
+/* Dashboard Footer */
+.dashboard-footer {
+    height: 1;
+    background: $surface;
+    border-top: solid $panel;
+    padding: 0 1;
+    margin: 1 0 0 0;
+}
+
+.footer-help {
+    width: 1fr;
+    color: $text-muted;
+}
+
+.footer-time {
+    width: auto;
+    color: $text;
+}
+
+/* ==================== Menu Bar ==================== */
+
+.menu-bar {
+    dock: top;
+    height: 3;
+    background: $surface;
+    border-bottom: heavy $primary;
+    padding: 0 1;
+    align: center middle;
+}
+
+.menu-logo {
+    color: $primary;
+    text-style: bold;
+    padding: 0 2 0 0;
+    width: auto;
+}
+
+.menu-button {
+    min-width: 12;
+    height: 1;
+    margin: 0 1;
+    border: none !important;
+    outline: none !important;
+    background: transparent;
+    color: $text-muted;
+}
+
+.menu-button:focus {
+    border: none !important;
+    outline: none !important;
+    text-style: none;
+}
+
+.menu-button:focus-within {
+    border: none !important;
+    outline: none !important;
+}
+
+.menu-button.-primary {
+    background: $primary;
+    color: $background;
+    text-style: bold;
+    border: none !important;
+    outline: none !important;
+}
+
+.menu-button.-primary:focus {
+    background: $primary;
+    color: $background;
+    text-style: bold;
+    border: none !important;
+    outline: none !important;
+}
+
+.menu-button.-primary:hover {
+    background: $primary;
+    color: $background;
+    text-style: bold;
+    border: none !important;
+    outline: none !important;
+}
+
+.menu-button:hover {
+    background: $panel;
+    color: $secondary;
+    text-style: bold;
+    border: none !important;
+    outline: none !important;
+}
+
+.menu-status {
+    width: auto;
+    padding: 0 1;
+    color: $text;
+    text-align: right;
+}
+
+/* ==================== Dashboard ==================== */
+
+.dashboard-grid {
+    grid-size: 3;
+    grid-gutter: 1;
+    padding: 2;
+}
+
+.action-card {
+    height: 10;
+    background: $surface;
+    border: heavy $panel;
+    padding: 1;
+}
+
+.action-card:hover {
+    border: heavy $primary;
+    background: $panel;
+}
+
+.action-card:focus {
+    border: heavy $primary;
+    background: $panel;
+}
+
+/* ==================== Device Browser ==================== */
+
+.device-list-container {
+    height: 1fr;
+    background: $background;
+    border: heavy $panel;
+    padding: 1;
+}
+
+/* ==================== Wizard Screens ==================== */
+
+.state-wizard-container, .upgrade-wizard-container {
+    height: 1fr;
+    padding: 1;
+}
+
+.step-indicator {
+    background: $surface;
+    border: heavy $primary;
+    padding: 1;
+    margin: 0 0 1 0;
+    color: $text;
+}
+
+.content-area {
+    height: 1fr;
+    background: $background;
+    border: heavy $panel;
+    padding: 1;
+    margin: 0 0 1 0;
+}
+
+.step-title {
+    color: $primary;
+    text-style: bold;
+    padding: 0 0 1 0;
+}
+
+.wizard-navigation {
+    padding: 1 0;
+    margin: 0 0 1 0;
+    border-top: solid $panel;
+}
+
+.wizard-navigation Button {
+    margin: 0 1 0 0;
+}
+
+.wizard-status {
+    dock: bottom;
+    height: auto;
+    background: $surface;
+    padding: 1;
+    color: $text;
+    text-align: center;
+    border-top: solid $panel;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ==================== Route Monitor ==================== */
+
+.monitor-container {
+    height: 1fr;
+    padding: 1;
+}
+
+.monitor-controls {
+    background: $surface;
+    border: heavy $primary;
+    padding: 1;
+    margin: 0 0 1 0;
+    height: auto;
+}
+
+.control-section {
+    padding: 0 1;
+    margin: 0 1 0 0;
+}
+
+.control-section Label {
+    color: $primary;
+    text-style: bold;
+    margin: 0 0 1 0;
+}
+
+.monitor-status {
+    background: $background;
+    border: solid $panel;
+    padding: 1;
+    margin: 0 0 1 0;
+    color: $text;
+    text-align: center;
+}
+
+/* ==================== BGP Toolbox ==================== */
+
+.bgp-container {
+    height: 1fr;
+    padding: 1;
+}
+
+.bgp-controls {
+    background: $surface;
+    border: heavy $primary;
+    padding: 1;
+    margin: 0 0 1 0;
+    height: auto;
+}
+
+.bgp-status {
+    background: $background;
+    border: solid $panel;
+    padding: 1;
+    margin: 0 0 1 0;
+    color: $text;
+    text-align: center;
+}
+
+.bgp-table {
+    height: 1fr;
+    background: $background;
+    border: heavy $panel;
+}
+
+/* ==================== Status Colors ==================== */
+
+.status-success {
+    color: $success;
+}
+
+.status-error {
+    color: $error;
+}
+
+.status-warning {
+    color: $warning;
+}
+
+.status-info {
+    color: $primary;
+}
+
+/* ==================== Config Backup Screen ==================== */
+
+.backup-container {
+    height: 1fr;
+    padding: 1;
+}
+
+.backup-options-panel {
+    width: 1fr;
+    background: $surface;
+    border: heavy $panel;
+    padding: 1;
+    margin: 0 1 0 0;
+}
+
+.backup-history-panel {
+    width: 1fr;
+    background: $surface;
+    border: heavy $panel;
+    padding: 1;
+}
+
+.history-table {
+    height: 1fr;
+    background: $background;
+}
+
+.file-actions {
+    padding: 1 0 0 0;
+}
+
+.file-status {
+    color: $text-muted;
+    padding: 1 0;
+}
+
+/* ==================== Config Deployment ==================== */
+
+.config-preview {
+    height: 1fr;
+    background: $background;
+    border: heavy $panel;
+    padding: 1;
+}
+
+.split-view {
+    height: 1fr;
+}
+
+/* ==================== Device Browser ==================== */
+
+.device-select-table {
+    height: 1fr;
+    background: $background;
+    border: heavy $panel;
+}
+
+.device-form-panel {
+    background: $surface;
+    border: heavy $panel;
+    padding: 1;
+    margin: 0 0 1 0;
+}
+
+/* ==================== Inventory Editor ==================== */
+
+.yaml-editor {
+    height: 1fr;
+    background: $background;
+    border: heavy $panel;
+    padding: 1;
+}
+
+.yaml-preview-panel {
+    width: 1fr;
+    background: $surface;
+    border: heavy $panel;
+    padding: 1;
+}
+
+.yaml-status {
+    background: $panel;
+    color: $text;
+    padding: 1;
+    margin: 1 0 0 0;
+}
+
+/* ==================== State Capture ==================== */
+
+.changes-panel {
+    height: 1fr;
+    background: $surface;
+    border: heavy $panel;
+    padding: 1;
+}
+
+.change-log {
+    height: 1fr;
+    background: $background;
+    padding: 1;
+    overflow: auto;
+}
+
+/* ==================== Route Monitor ==================== */
+
+.monitor-content {
+    height: 1fr;
+}
+
+.routes-panel {
+    height: 1fr;
+    background: $surface;
+    border: heavy $panel;
+    padding: 1;
+}
+
+.routes-table {
+    height: 1fr;
+    background: $background;
+}
+
+/* ==================== BGP Toolbox ==================== */
+
+.peer-details {
+    background: $surface;
+    border: heavy $panel;
+    padding: 1;
+    margin: 0 0 1 0;
+}
+
+/* ==================== General UI Components ==================== */
+
+.section {
+    background: $surface;
+    border: solid $panel;
+    padding: 1;
+    margin: 0 0 1 0;
+}
+
+.section-title {
+    text-style: bold;
+    color: $primary;
+    padding: 0 0 1 0;
+}
+
+.toolbar {
+    background: $surface;
+    border-bottom: solid $panel;
+    padding: 1;
+    height: auto;
+}
+
+.action-bar {
+    background: $surface;
+    padding: 1;
+    height: auto;
+}
+
+.action-buttons {
+    padding: 0;
+}
+
+.action-buttons Button {
+    margin: 0 1 0 0;
+}
+
+.button-bar {
+    padding: 1;
+    height: auto;
+}
+
+.button-bar Button {
+    margin: 0 1 0 0;
+}
+
+.form-actions {
+    padding: 1 0;
+}
+
+.form-actions Button {
+    margin: 0 1 0 0;
+}
+
+.form-column {
+    width: 1fr;
+    padding: 0 1;
+}
+
+.header-title {
+    text-style: bold;
+    color: $primary;
+    padding: 1;
+}
+
+.status-bar {
+    background: $surface;
+    border-top: solid $panel;
+    padding: 1;
+    height: auto;
+}
+
+.status-label {
+    color: $text;
+    padding: 0 1 0 0;
+}
+
+.status-value {
+    color: $primary;
+    text-style: bold;
+}
+
+.status-message {
+    color: $text-muted;
+    padding: 1;
+    text-align: center;
+}
+
+.upgrade-wizard-container {
+    height: 1fr;
+    padding: 1;
+}
