@@ -50,10 +50,12 @@ class NetworkAutomationApp(App):
  
     # Active theme (don't use 'current_theme' - it's a Textual built-in)
     active_theme: reactive[str] = reactive("tokyo-night")
- 
-    # Load custom component styles (uses CSS variables from theme)
+
+    # Load custom component styles
     CSS_PATH = str(Path(__file__).parent.parent / "app_styles.tcss")
  
+    
+     
     TITLE = "🌃 Network Automation TUI"
     SUB_TITLE = "Juniper Device Management"
  
@@ -80,6 +82,12 @@ class NetworkAutomationApp(App):
         """Initialize the application when mounted"""
         self.title = f"{self.TITLE} - Phase 2"
         self.sub_title = self.SUB_TITLE
+
+        # Start with Tokyo Night theme by default to avoid issues
+        self.theme = "tokyo-night"
+        self.active_theme = "tokyo-night"
+
+        self.notify("🎨 Ready! Press Ctrl+T to switch themes", severity="information")
  
         # Load inventory
         try:
@@ -181,7 +189,6 @@ class NetworkAutomationApp(App):
  
         try:
             # Use Textual's built-in theme system
-            # Theme names: "tokyo-night", "nord", "gruvbox"
             self.theme = theme_key
  
             self.active_theme = theme_key

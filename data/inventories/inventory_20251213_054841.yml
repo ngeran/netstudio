@@ -1,0 +1,15 @@
+devices:
+- hostname: SRX320
+  ip_address: 172.27.200.200
+  device_type: firewall
+  platform: junos
+  location: Basement
+  username: admin
+  password: password
+- hostname: SRX210
+  ip_address: 172.27.200.201
+  device_type: firewall
+  platform: junos
+  location: Basement
+  username: admin
+  password: password
